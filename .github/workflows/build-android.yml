@@ -33,8 +33,13 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
+      - name: List APK outputs
+        run: |
+          echo "APK files found:"
+          find android/app/build/outputs/ -type f
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/apk/release/*.apk
