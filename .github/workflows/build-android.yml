@@ -1,4 +1,4 @@
-name: Android Build
+name: Android QA6 Build
 
 on:
   push:
@@ -7,6 +7,10 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
+    env:
+      VERSION_NAME: "1.1" # Static version (e.g., 1.1)
+      BUILD_NUMBER: ${{ github.run_number }} # Auto-incremented (e.g., 123)
+      ENVIRONMENT: "qa6" # Target environment (e.g., qa6)
 
     steps:
       - name: Checkout repository
@@ -17,29 +21,32 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Update Android version and environment
+        run: |
+          # Update version in build.gradle
+          cd android/app
+          sed -i "s/versionCode .*/versionCode $BUILD_NUMBER/" build.gradle
+          sed -i "s/versionName .*/versionName \"$VERSION_NAME\"/" build.gradle
+
+          # Inject QA6 environment variables (e.g., API URL)
+          echo "ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
+          echo "QA6_API_URL=https://api.qa6.example.com" >> $GITHUB_ENV
+
+          # Optional: Update environment-specific files (e.g., .env or strings.xml)
+          sed -i "s|{{API_URL}}|$QA6_API_URL|g" src/main/res/values/strings.xml
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build Android
+      - name: Build Android (QA6)
         run: |
           npm run build
           npx cap sync android
           cd android
-          ./gradlew assembleRelease
-
-      - name: List APK outputs
-        run: |
-          echo "APK files found:"
-          find android/app/build/outputs/ -type f
+          ./gradlew assembleQa6Release  # Assumes a "qa6" flavor in build.gradle
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: android/app/build/outputs/apk/release/*.apk
+          name: app-qa6-release-v${{ env.VERSION_NAME }}
+          path: android/app/build/outputs/apk/qa6/release/*.apk
