@@ -26,11 +26,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Android (Production)
+      - name: Build Android
         run: |
           npm run build
           npx cap sync android
-          ionic cap build android --configuration=production
+          cd android
+          ./gradlew assembleRelease
 
       - name: List APK outputs
         run: |
