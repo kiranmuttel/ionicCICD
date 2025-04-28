@@ -56,6 +56,48 @@
               ],
               "outputHashing": "all"
             },
+            "qa6": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa6.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "qa7": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa7.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -75,6 +117,12 @@
           "configurations": {
             "production": {
               "buildTarget": "app:build:production"
+            },
+            "qa6": {
+              "buildTarget": "app:build:qa6"
+            },
+            "qa7": {
+              "buildTarget": "app:build:qa7"
             },
             "development": {
               "buildTarget": "app:build:development"
