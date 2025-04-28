@@ -9,6 +9,6 @@ import { environment } from 'src/environments/environment.prod';
 export class HomePage {
   isProd = '';
   constructor() {
-    this.isProd = environment.production;
+    this.isProd = environment.envName;
   }
 }
