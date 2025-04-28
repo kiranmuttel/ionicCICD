@@ -2,7 +2,7 @@ name: Android Staging Build
 
 on:
   push:
-    branches: [develop]
+    branches: [newcicd]
 
 jobs:
   build-android:
