@@ -8,7 +8,9 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class HomePage {
   isProd: string;
+  environmentName: string;
   constructor() {
     this.isProd = environment.production.toString();
+    this.environmentName = environment.envName;
   }
 }
